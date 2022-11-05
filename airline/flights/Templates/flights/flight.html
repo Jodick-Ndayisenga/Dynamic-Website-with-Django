@@ -1,0 +1,47 @@
+{% extends 'flights/flightLayout.html' %}
+{% block body %}
+<h1> Flight {{ flight.id }}</h1>
+
+<h3>
+<ul>
+    <li>Origin: {{ flight.origin }}</li>
+    <li>Destination: {{ flight.destination }}</li>
+    <li>Duration: {{ flight.duration }} min</li>
+</ul>
+</h3>
+
+<h3>
+    <h2> Passengers</h2>
+    {% for passenger in passengers %}
+        <ul>
+            <li>{{ passenger }}</li>
+        </ul>
+        {% empty %}
+            <h1>No passenger</h1>
+    {% endfor %}
+</h3>
+
+<h2>Book a flight for someone!</h2>
+
+<!What this methode will do, it will send the flight id to book function which will take it as argument>
+
+<form action="{% url 'book' flight.id %}" method="post">
+    <!what this line belows does, it let django knows that it really is this appplicaton submitting the information>
+    {% csrf_token %}
+    <select name="passenger">
+        <!the reason for name to be passenger, is because in the book we stated the the book function will look something under the name passenger>
+        
+        {% for passenger in non_passengers %}
+        <!the reason we have set the value of select to be passenger id is just because we have sated in book function that it has to get the passenger id to get the remaing information>
+            <option value="{{ passenger.id }}">{{ passenger }}</option>
+        {% endfor %}
+    </select>
+    <input type="Submit">
+
+</form>
+<pre>
+
+    
+</pre>
+<a href="{% url 'index' %}">Back to the flight list</a>
+{% endblock %}
